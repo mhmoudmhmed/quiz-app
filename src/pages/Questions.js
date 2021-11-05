@@ -10,8 +10,7 @@ const getRandomInt = (max) => {
   return Math.floor(Math.random() * Math.floor(max));
 };
 
-const Questions = ({ questions }) => {
-  const { score } = useSelector((state) => state);
+const Questions = ({ questions, selectQuestion }) => {
   const history = useHistory();
   const dispatch = useDispatch();
 
@@ -34,8 +33,9 @@ const Questions = ({ questions }) => {
   const handleClickAnswer = (e) => {
     const question = questions[questionIndex];
     if (e.target.textContent === question.correct_answer) {
-      dispatch(handleScoreChange(score + 1));
+      dispatch(handleScoreChange(selectQuestion.score + 1));
     }
+    console.log(selectQuestion.score);
 
     if (questionIndex + 1 < questions.length) {
       setQuestionIndex(questionIndex + 1);
@@ -56,7 +56,7 @@ const Questions = ({ questions }) => {
         </Box>
       ))}
       <Box mt={5}>
-        score: {score} /{questions.length}
+        score: {selectQuestion.score} /{questions.length}
       </Box>
     </Box>
   );
@@ -70,6 +70,4 @@ const mapStateToProps = (state) => {
   };
 };
 
-export default connect(mapStateToProps, { selectQuestion: handleScoreChange })(
-  Questions
-);
+export default connect(mapStateToProps)(Questions);

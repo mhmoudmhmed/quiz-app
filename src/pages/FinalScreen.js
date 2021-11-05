@@ -1,14 +1,12 @@
 import { Button, Typography } from "@mui/material";
 import { Box } from "@mui/system";
-import { useDispatch } from "react-redux";
-import { useSelector } from "react-redux";
+import { connect, useDispatch } from "react-redux";
 import { useHistory } from "react-router";
 import { handleScoreChange } from "../redux/actions";
 
-const FinalScreen = () => {
+const FinalScreen = ({ selectQuestion }) => {
   const disptach = useDispatch();
   const history = useHistory();
-  // const { score } = useSelector((state) => state);
 
   const handleBackToSettings = () => {
     disptach(handleScoreChange(0));
@@ -18,13 +16,20 @@ const FinalScreen = () => {
   return (
     <Box mt={30}>
       <Typography variant="h3" fontWeight="bold" mb={3}>
-        {/* Final Score {score} */}
+        Final Score {selectQuestion.score}
       </Typography>
       <Button onClick={handleBackToSettings} variant="outlined">
-        back to settings!
+        Restart Quiz!
       </Button>
     </Box>
   );
 };
 
-export default FinalScreen;
+const mapStateToProps = (state) => {
+  console.log(state);
+  return {
+    selectQuestion: state.selectQuestion,
+  };
+};
+
+export default connect(mapStateToProps)(FinalScreen);
